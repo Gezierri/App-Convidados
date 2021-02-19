@@ -11,7 +11,7 @@ import com.gezierri.convidados.service.repository.GuestRepository
 class GuestsFormViewModel(application: Application) : AndroidViewModel(application) {
 
     private val mContextMenu = application.applicationContext
-    private val mGuestRepository: GuestRepository = GuestRepository.getInstance(mContextMenu)
+    private val mGuestRepository: GuestRepository = GuestRepository(mContextMenu)
 
     private var mSaveGuest = MutableLiveData<Boolean>()
     val saveGuest: LiveData<Boolean> = mSaveGuest
@@ -20,7 +20,11 @@ class GuestsFormViewModel(application: Application) : AndroidViewModel(applicati
     val guest: LiveData<GuestModel> = mGuestModel
 
     fun save(id: Int, name: String, presence: Boolean) {
-        val guest = GuestModel(id, name, presence)
+        val guest = GuestModel().apply {
+            this.id = id
+            this.name = name
+            this.presence = presence
+        }
         if (id == 0) {
             mSaveGuest.value = mGuestRepository.save(guest)
         }else{

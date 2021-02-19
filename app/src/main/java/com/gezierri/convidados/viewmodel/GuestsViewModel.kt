@@ -11,7 +11,7 @@ import com.gezierri.convidados.service.repository.GuestRepository
 
 class GuestsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val mGuestAllRepository = GuestRepository.getInstance(application.applicationContext)
+    private val mGuestAllRepository = GuestRepository(application.applicationContext)
 
     private val mGuestList = MutableLiveData<List<GuestModel>>()
     val guestList: LiveData<List<GuestModel>> = mGuestList
@@ -28,6 +28,7 @@ class GuestsViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun delete(id: Int) {
-        mGuestAllRepository.delete(id)
+        val guest = mGuestAllRepository.get(id)
+        mGuestAllRepository.delete(guest)
     }
 }
